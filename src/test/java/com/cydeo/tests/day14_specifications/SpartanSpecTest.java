@@ -1,58 +1,44 @@
 package com.cydeo.tests.day14_specifications;
 
-import com.cydeo.utils.SpartanSecureTestBase;
+import com.cydeo.utils.BookItAPITestBase;
 import com.cydeo.utils.ConfigurationReader;
 import io.restassured.http.ContentType;
+import io.restassured.response.Response;
 import io.restassured.specification.RequestSpecification;
 import io.restassured.specification.ResponseSpecification;
 import org.junit.jupiter.api.Test;
-import static io.restassured.RestAssured.*;
-
-import io.restassured.response.Response;
 
 import java.util.Map;
 
-import static org.hamcrest.Matchers.*;
+import static io.restassured.RestAssured.*;
 import static org.hamcrest.MatcherAssert.*;
+import static org.hamcrest.Matchers.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import com.cydeo.utils.SpartanTestBase;
 
-public class SpartanSpecTest extends SpartanSecureTestBase {
+import javax.print.attribute.standard.RequestingUserName;
 
-    RequestSpecification requestSpec = given().accept(ContentType.JSON)
-            .and().auth().basic("admin","admin");
-
-    ResponseSpecification responseSpec = expect().statusCode(200).
-            and().contentType(ContentType.JSON);
-
+public class SpartanSpecTest extends SpartanTestBase {
+//    RequestSpecification requestSpecification = given().accept(ContentType.JSON)
+//            .and().auth().basic("admin","admin");
+//    ResponseSpecification responseSpecification = expect().statusCode(200)
+//        .and().contentType(ContentType.JSON);
     @Test
-    public void allSpartansTest() {
-
-//       given().accept(ContentType.JSON)
-//                .and().auth().basic("admin","admin")
-
-            given().spec(requestSpec)
-            .when().get("/spartans")
-           .then().spec(responseSpec)
-                    .log().all();
+    public void allSpartansTest(){
+        given().spec(requestSpecification)
+                .when().get("/spartans")
+                .then().spec(responseSpecification)
+               .log().all();
     }
 
     @Test
-    public void singleSpartanTest() {
-
-            given().spec(requestSpec)
-            .and().pathParam("id",15)
-            .when().get("/spartans/{id}")
-            .then().spec(responseSpec)
-             .and().body("name", equalTo("Meta"))
-                    .log().all();
+    public void singleSpartansTest(){
+        given().spec(requestSpecification)
+                .and().pathParam("id",15)
+                .when().get("/spartans/{id}")
+                .then().spec(responseSpecification)
+                .log().all();
     }
 
 }
-
-
-
-
-
-
-
-
